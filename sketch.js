@@ -42,10 +42,10 @@ function setup() {
   trex.addAnimation("collided", trex_collided);
   trex.scale = 0.5;
   
-  ground = createSprite(200,180,400,20);
+  ground = createSprite(200,200,400,20);
   ground.addImage("ground",groundImage);
-  ground.x = ground.width /2;
-  ground.velocityX = -(6 + 3*score/100);
+  ground.x = ground.width /3;
+  ground.velocityX = -(5 + 2*score/100);
   
   gameOver = createSprite(300,100);
   gameOver.addImage(gameOverImg);
@@ -53,11 +53,11 @@ function setup() {
   restart = createSprite(300,140);
   restart.addImage(restartImg);
   
-  gameOver.scale = 0.5;
-  restart.scale = 0.5;
+  gameOver.scale = 0.9;
+  restart.scale = 0.9;
 
-  gameOver.visible = false;
-  restart.visible = false;
+  gameOver.visible = true;
+  restart.visible = truee;
   
   invisibleGround = createSprite(200,190,400,10);
   invisibleGround.visible = false;
@@ -65,23 +65,23 @@ function setup() {
   cloudsGroup = new Group();
   obstaclesGroup = new Group();
   
-  score = 0;
+  score = 10;
 }
 
 function draw() {
   //trex.debug = true;
-  background(255);
+  background(260);
   text("Score: "+ score, 500,50);
   
   if (gameState===PLAY){
     score = score + Math.round(getFrameRate()/60);
-    ground.velocityX = -(6 + 3*score/100);
+    ground.velocityX = -(7 + 4*score/100);
   
-    if(keyDown("space") && trex.y >= 159) {
-      trex.velocityY = -12;
+    if(keyDown("space") && trex.y >= 160) {
+      trex.velocityY = -13;
     }
   
-    trex.velocityY = trex.velocityY + 0.8
+    trex.velocityY = trex.velocityY + 0.9
   
     if (ground.x < 0){
       ground.x = ground.width/2;
@@ -145,51 +145,73 @@ function spawnClouds() {
 
 function spawnObstacles() {
   if(frameCount % 60 === 0) {
+    
     var obstacle = createSprite(600,165,10,40);
     //obstacle.debug = true;
+    
     obstacle.velocityX = -(6 + 3*score/100);
     
     //generate random obstacles
     var rand = Math.round(random(1,6));
+    
     switch(rand) {
+        
       case 1: obstacle.addImage(obstacle1);
               break;
+        
       case 2: obstacle.addImage(obstacle2);
               break;
+        
       case 3: obstacle.addImage(obstacle3);
               break;
+        
       case 4: obstacle.addImage(obstacle4);
               break;
+        
       case 5: obstacle.addImage(obstacle5);
               break;
+        
       case 6: obstacle.addImage(obstacle6);
               break;
+        
       default: break;
+        
     }
     
     //assign scale and lifetime to the obstacle           
     obstacle.scale = 0.5;
+    
     obstacle.lifetime = 300;
+    
     //add each obstacle to the group
     obstaclesGroup.add(obstacle);
+    
   }
+  
 }
 
 function reset(){
+  
   gameState = PLAY;
-  gameOver.visible = false;
-  restart.visible = false;
+  
+  gameOver.visible = true;
+  
+  restart.visible = truee;
   
   obstaclesGroup.destroyEach();
+  
   cloudsGroup.destroyEach();
   
   trex.changeAnimation("running",trex_running);
   
   if(highscore<score){
     highscore = score;
+    
   }
+  
   console.log(highscore);
   
-  score = 0;
+  score = 50;
+  
   
 }
